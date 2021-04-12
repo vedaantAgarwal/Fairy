@@ -29,7 +29,9 @@ function setup() {
 
 	engine = Engine.create();
 	world = engine.world;
-
+	star = createSprite(100, 100);
+	star.addImage(starImg);
+	star.scale = 0.2;
 	starBody = Bodies.circle(650, 30, 5, { restitution: 0.5, isStatic: true });
 	World.add(world, starBody);
 
@@ -40,22 +42,23 @@ function setup() {
 
 function draw() {
 	background(bgImg);
-	if (keyDown("Down_Arrow")) {
-		gameState = PLAY;
-	}
-	if (gameState === PLAY) {
-		keyPressed();
-		spawnStars();
+	star.x = starBody.position.x;
+	star.y = starBody.position.y;
+	if (starBody.position.y > 470 && star.y > 470) {
+		Matter.Body.setStatic(starBody, true);
 	}
 	drawSprites();
 }
 
 function keyPressed() {
-	if (keyWentDown("Right")) {
-		fairy.velocityX = 3;
+	if (keyCode == RIGHT_ARROW) {
+		fairy.x = fairy.x + 10;
 	}
-	if (keyWentDown("Left")) {
-		fairy.velocityX = -3;
+	if (keyCode == LEFT_ARROW) {
+		fairy.x = fairy.x - 10;
+	}
+	if (keyCode == DOWN_ARROW) {
+		Matter.Body.setStatic(starBody, false);
 	}
 }
 
